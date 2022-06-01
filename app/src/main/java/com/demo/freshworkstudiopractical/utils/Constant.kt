@@ -5,7 +5,7 @@ class Constant {
     companion object {
         const val BASE_URL = "https://api.giphy.com/v1/gifs/"
 
-        const val API_KEY = "tqGSaO7f41ElmhFSwswbmQbXxOUoaQW3"
+        const val API_KEY = "AObpB2eMlMqSp4h5t41SsWnni4cmcQut" //"tqGSaO7f41ElmhFSwswbmQbXxOUoaQW3"
         const val PAGE_LIMIT = "25"
 
 
