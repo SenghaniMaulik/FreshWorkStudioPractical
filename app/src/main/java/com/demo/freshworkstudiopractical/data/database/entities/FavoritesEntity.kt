@@ -9,5 +9,5 @@ import com.demo.freshworkstudiopractical.utils.Constant.Companion.FAVORITE_TABLE
 class FavoritesEntity(
     @PrimaryKey(autoGenerate = false)
     var id: String,
-    var gitDataModel: GifResponseModel.GitDataModel
+    var gitDataModel: GifResponseModel.GitDataModel // storing data as string to avoid creating multiple tables
 )

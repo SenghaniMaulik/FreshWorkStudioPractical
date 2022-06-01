@@ -25,12 +25,8 @@ class FavouriteGifListingFragmentViewModel @Inject constructor(
     private val repository: Repository,
     application: Application
 ) : AndroidViewModel(application) {
-
-
     var favouriteList: LiveData<List<FavoritesEntity>> = MutableLiveData()
-
     var mContext = application
-
     fun getFavouriteList(
     ) {
         viewModelScope.launch {
@@ -40,6 +36,13 @@ class FavouriteGifListingFragmentViewModel @Inject constructor(
             } catch (e: Exception) {
                 Timber.e(e.localizedMessage)
             }
+        }
+    }
+
+    fun deleteAllFavourites(
+    ) {
+        viewModelScope.launch {
+                 repository.local.deleteAllFavourites()
         }
     }
 

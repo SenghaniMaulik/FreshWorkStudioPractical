@@ -21,6 +21,8 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
 
+/*Created this viewmodel for testing purpose only because of limited api call is allow in beta user of giphy.com so testing data is added to json files in asset folder */
+
 @HiltViewModel
 class GifListingFragmentViewModelTest @Inject constructor(
     private val repository: Repository,
@@ -55,20 +57,6 @@ class GifListingFragmentViewModelTest @Inject constructor(
                 _trendingGifList.value = NetworkResult.Loading()
                 // online data check if internet if available
                 if (mContext.checkForInternetConnection()) {
-                   /* val response = repository.remote.getTrendingGif(offset.toString())
-                    response.body()?.let {
-
-                        if (it.meta.status == Constant.API_RESPONSE_STATUS.OK) {
-                            it.let { data ->
-                                _trendingGifList.value = NetworkResult.Success(
-                                    data
-                                )
-                            }
-                        } else {
-                            _trendingGifList.value =
-                                NetworkResult.Error(it.meta.msg)
-                        }
-                    }*/
                     _trendingGifList.value = NetworkResult.Success(
                         gitResponseModel
                     )
@@ -98,20 +86,6 @@ class GifListingFragmentViewModelTest @Inject constructor(
                 _searchGifList.value = NetworkResult.Loading()
                 // online data check if internet if available
                 if (mContext.checkForInternetConnection()) {
-                     /*val response = repository.remote.getSearchGif(query,offset.toString())
-                     response.body()?.let {
-
-                         if (it.meta.status == Constant.API_RESPONSE_STATUS.OK) {
-                             it.let { data ->
-                                 _searchGifList.value = NetworkResult.Success(
-                                     data
-                                 )
-                             }
-                         } else {
-                             _searchGifList.value =
-                                 NetworkResult.Error(it.meta.msg)
-                         }
-                     }*/
                     _searchGifList.value = NetworkResult.Success(
                         gitResponseModel
                     )
@@ -124,22 +98,6 @@ class GifListingFragmentViewModelTest @Inject constructor(
                 _searchGifList.value =
                     NetworkResult.Error(mContext.getString(R.string.something_went_wrong))
             }
-        }
-    }
-
-    fun insertItemInCart(
-        favoritesEntity: FavoritesEntity
-    ) {
-        viewModelScope.launch {
-            repository.local.insertToFavourite(favoritesEntity)
-        }
-    }
-
-    fun deleteFavourite(
-        favoritesEntity: FavoritesEntity
-    ) {
-        viewModelScope.launch {
-            repository.local.deleteFavourite(favoritesEntity)
         }
     }
 }

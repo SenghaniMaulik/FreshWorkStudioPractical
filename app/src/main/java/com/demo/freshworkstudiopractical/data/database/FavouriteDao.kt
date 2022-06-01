@@ -20,6 +20,10 @@ interface FavouriteDao {
     @Query("SELECT * FROM favorite_table WHERE id = :id LIMIT 1")
     suspend fun getFavourite(id: String): FavoritesEntity?
 
+    @Query("DELETE FROM favorite_table")
+    suspend fun deleteAllFavourites()
+
+
 }
 
 

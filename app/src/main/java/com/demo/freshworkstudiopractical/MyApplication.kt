@@ -11,6 +11,7 @@ class MyApplication : Application() {
     override fun onCreate() {
         super.onCreate()
         if (BuildConfig.DEBUG) {
+            // Timber is used to show log
             Timber.plant(Timber.DebugTree())
         }
     }

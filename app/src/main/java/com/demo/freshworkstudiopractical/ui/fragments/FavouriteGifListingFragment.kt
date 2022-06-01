@@ -1,5 +1,6 @@
 package com.demo.freshworkstudiopractical.ui.fragments
 
+import android.app.AlertDialog
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -21,6 +22,7 @@ import com.demo.freshworkstudiopractical.databinding.FragmentGifListingBinding
 import com.demo.freshworkstudiopractical.model.response.GifResponseModel
 import com.demo.freshworkstudiopractical.utils.NetworkResult
 import com.demo.freshworkstudiopractical.utils.Utils
+import com.demo.freshworkstudiopractical.utils.setSafeOnClickListener
 import com.demo.freshworkstudiopractical.utils.toast
 import com.demo.freshworkstudiopractical.viewmodel.FavouriteGifListingFragmentViewModel
 import com.demo.freshworkstudiopractical.viewmodel.GifListingFragmentViewModel
@@ -32,23 +34,22 @@ import java.util.*
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class FavouriteGifListingFragment : Fragment() {
-
-    private var _binding: FragmentFavouriteGifListingBinding? = null
-    private val binding get() = _binding!!
+class FavouriteGifListingFragment : BaseFragment() {
 
     @Inject
     lateinit var favouriteDao: FavouriteDao
+    private var _binding: FragmentFavouriteGifListingBinding? = null
+    private val binding get() = _binding!!
     private val viewModel: FavouriteGifListingFragmentViewModel by viewModels()
     private lateinit var gifListAdapter: GifListAdapter
+
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        if (_binding == null) {
-            _binding = FragmentFavouriteGifListingBinding.inflate(inflater, container, false)
-            setData()
-        }
+        _binding = FragmentFavouriteGifListingBinding.inflate(inflater, container, false)
+        setData()
         return _binding?.root ?: binding.root
     }
 
@@ -58,15 +59,32 @@ class FavouriteGifListingFragment : Fragment() {
         }
         viewModel.getFavouriteList()
         setObserver()
+        setClick()
+    }
+
+    private fun setClick() {
+        binding.imgClear.setSafeOnClickListener {
+            val builder = AlertDialog.Builder(requireContext())
+            builder.setMessage(getString(R.string.sure_to_delete))
+                .setCancelable(false)
+                .setPositiveButton(getString(R.string.ye)) { dialog, id ->
+                    // Delete all favourite from database
+                    viewModel.deleteAllFavourites()
+                }
+                .setNegativeButton(getString(R.string.no)) { dialog, id ->
+                    // Dismiss the dialog
+                    dialog.dismiss()
+                }
+            val alert = builder.create()
+            alert.show()
+        }
     }
 
     private fun setupGifAdapter() {
         gifListAdapter =
             GifListAdapter(requireContext(), favouriteDao, object : AdapterClickListener {
                 override fun onItemClick(view: View, pos: Int, any: Any) {
-
                     var dataModel = any as GifResponseModel.GitDataModel
-
                     when (view.id) {
                         R.id.imgFavourite -> {
                             CoroutineScope(Dispatchers.IO).launch {
@@ -106,12 +124,6 @@ class FavouriteGifListingFragment : Fragment() {
         }
     }
 
-    private fun shareGif(url: String) {
-        val i = Intent(Intent.ACTION_VIEW)
-        i.data = Uri.parse(url)
-        startActivity(i)
-    }
-
     private fun setObserver() {
         viewModel.favouriteList.observe(viewLifecycleOwner) {
             var list = mutableListOf<GifResponseModel.GitDataModel>()
@@ -129,11 +141,6 @@ class FavouriteGifListingFragment : Fragment() {
                 binding.txtEmptyView.isVisible = true
             }
         }
-    }
-
-    private fun showProgressBar() {
-        binding.swipeRefresh.isRefreshing = false
-
     }
 
 }

@@ -25,4 +25,8 @@ class LocalDataSource @Inject constructor(
     suspend fun getFavourite(id:String): FavoritesEntity? {
         return favouriteDao.getFavourite(id)
     }
+
+    suspend fun deleteAllFavourites() {
+        return favouriteDao.deleteAllFavourites()
+    }
 }

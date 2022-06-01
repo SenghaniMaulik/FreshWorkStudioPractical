@@ -29,9 +29,6 @@ class GifListingFragmentViewModel @Inject constructor(
 
     var mContext = application
 
-    private val trandingResponse = "tranding_response.json"
-    private val searchResponse = "search_response.json"
-
     private val _trendingGifList =
         MutableLiveData<NetworkResult<GifResponseModel>>()
     val trendingGifList: LiveData<NetworkResult<GifResponseModel>> get() = _trendingGifList
@@ -44,12 +41,6 @@ class GifListingFragmentViewModel @Inject constructor(
     fun getTrendingGif(
         offset: Int
     ) {
-
-        Timber.e("Api Call===>$offset ")
-
-        var gitResponseModel =
-            Gson().fromJson(trandingResponse.assetJSONFile(mContext), GifResponseModel::class.java)
-
         viewModelScope.launch {
             try {
                 _trendingGifList.value = NetworkResult.Loading()
@@ -69,9 +60,6 @@ class GifListingFragmentViewModel @Inject constructor(
                                 NetworkResult.Error(it.meta.msg)
                         }
                     }
-//                    _trendingGifList.value = NetworkResult.Success(
-//                        gitResponseModel
-//                    )
                 } else {
                     _trendingGifList.value =
                         NetworkResult.Error(mContext.getString(R.string.no_internet))
@@ -88,33 +76,25 @@ class GifListingFragmentViewModel @Inject constructor(
     fun getSearchGif(
         query: String, offset: Int
     ) {
-
-        Timber.e("Api Call===>$offset  $query")
-        var gitResponseModel =
-            Gson().fromJson(searchResponse.assetJSONFile(mContext), GifResponseModel::class.java)
-
         viewModelScope.launch {
             try {
                 _searchGifList.value = NetworkResult.Loading()
                 // online data check if internet if available
                 if (mContext.checkForInternetConnection()) {
-                     val response = repository.remote.getSearchGif(query,offset.toString())
-                     response.body()?.let {
+                    val response = repository.remote.getSearchGif(query, offset.toString())
+                    response.body()?.let {
 
-                         if (it.meta.status == Constant.API_RESPONSE_STATUS.OK) {
-                             it.let { data ->
-                                 _searchGifList.value = NetworkResult.Success(
-                                     data
-                                 )
-                             }
-                         } else {
-                             _searchGifList.value =
-                                 NetworkResult.Error(it.meta.msg)
-                         }
-                     }
-//                    _searchGifList.value = NetworkResult.Success(
-//                        gitResponseModel
-//                    )
+                        if (it.meta.status == Constant.API_RESPONSE_STATUS.OK) {
+                            it.let { data ->
+                                _searchGifList.value = NetworkResult.Success(
+                                    data
+                                )
+                            }
+                        } else {
+                            _searchGifList.value =
+                                NetworkResult.Error(it.meta.msg)
+                        }
+                    }
                 } else {
                     _searchGifList.value =
                         NetworkResult.Error(mContext.getString(R.string.no_internet))
@@ -124,22 +104,6 @@ class GifListingFragmentViewModel @Inject constructor(
                 _searchGifList.value =
                     NetworkResult.Error(mContext.getString(R.string.something_went_wrong))
             }
-        }
-    }
-
-    fun insertItemInCart(
-        favoritesEntity: FavoritesEntity
-    ) {
-        viewModelScope.launch {
-            repository.local.insertToFavourite(favoritesEntity)
-        }
-    }
-
-    fun deleteFavourite(
-        favoritesEntity: FavoritesEntity
-    ) {
-        viewModelScope.launch {
-            repository.local.deleteFavourite(favoritesEntity)
         }
     }
 }

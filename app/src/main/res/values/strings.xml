@@ -6,4 +6,8 @@
     <string name="menu_search">Search</string>
     <string name="search_gifs">Search Gif</string>
     <string name="no_favourite_gifs_available">No Favourite Gifs Available</string>
+    <string name="favourite_gifs">Favourite Gifs</string>
+    <string name="sure_to_delete">Are you sure you want to Delete all Favourites Gifs?</string>
+    <string name="ye">Yes</string>
+    <string name="no">No</string>
 </resources>

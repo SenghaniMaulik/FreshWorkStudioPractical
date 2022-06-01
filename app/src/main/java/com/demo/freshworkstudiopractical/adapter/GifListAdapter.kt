@@ -1,13 +1,9 @@
 package com.demo.freshworkstudiopractical.adapter
 
 import android.content.Context
-import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.annotation.Nullable
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import androidx.vectordrawable.graphics.drawable.Animatable2Compat
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
@@ -15,7 +11,6 @@ import com.bumptech.glide.load.resource.gif.GifDrawable
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
 import com.demo.freshworkstudiopractical.R
-import com.demo.freshworkstudiopractical.adapter.diffUtils.GifDiffCallback
 import com.demo.freshworkstudiopractical.common.AdapterClickListener
 import com.demo.freshworkstudiopractical.data.database.FavouriteDao
 import com.demo.freshworkstudiopractical.databinding.ListItemBinding
@@ -32,7 +27,6 @@ class GifListAdapter(
     val mListener: AdapterClickListener
 ) :
     RecyclerView.Adapter<GifListAdapter.ViewHolder>() {
-
     var list = mutableListOf<GifResponseModel.GitDataModel>()
 
     class ViewHolder(val binding: ListItemBinding) :
@@ -50,6 +44,7 @@ class GifListAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val dataModel = list[holder.absoluteAdapterPosition]
+        dataModel.adapterPos = holder.absoluteAdapterPosition
         holder.binding.apply {
             dataModel.apply {
                 Glide.with(context).asGif()
@@ -111,6 +106,20 @@ class GifListAdapter(
         }
     }
 
+    override fun onViewRecycled(holder: ViewHolder) {
+        super.onViewRecycled(holder)
+        // https://github.com/bumptech/glide/issues/624#issuecomment-140134792
+        // Forget view, try to free resources
+        Glide.with(holder.itemView.context).clear(holder.binding.imgGif)
+        holder.binding.apply {
+            imgGif.setImageDrawable(null)
+            // Make sure to show progress when loading new view
+            progressGif.show()
+        }
+        Timber.i("onViewRecycled:\t$holder")
+        Timber.i("onViewRecycled:\t${holder.binding.progressGif}")
+    }
+
     override fun getItemCount(): Int = list.size
 
 
@@ -132,7 +141,7 @@ class GifListAdapter(
 
         this.list.addAll(dataList)
         if (isNew)
-            notifyDataSetChanged()
+            notifyDataSetChanged()// used to clear all data when first page api data load
         else
             notifyItemRangeInserted(itemCount, list.size - 1)
 

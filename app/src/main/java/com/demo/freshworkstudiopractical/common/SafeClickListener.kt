@@ -3,6 +3,7 @@ package com.demo.freshworkstudiopractical.common
 import android.os.SystemClock
 import android.view.View
 
+// used to avoid multiple at a time
 class SafeClickListener(
     private var defaultInterval: Int = 1000,
     private val onSafeCLick: (View) -> Unit

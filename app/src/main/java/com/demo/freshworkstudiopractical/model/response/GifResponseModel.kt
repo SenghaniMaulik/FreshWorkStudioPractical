@@ -6,6 +6,7 @@ data class GifResponseModel(
     var meta: Meta
 ) {
     data class GitDataModel(
+        var adapterPos: Int = 0,
         var bitly_gif_url: String? = null,
         var bitly_url: String? = null,
         var content_url: String? = null,
