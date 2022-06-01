@@ -22,7 +22,7 @@ import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
-class GifListingFragmentViewModel @Inject constructor(
+class GifListingFragmentViewModelTest @Inject constructor(
     private val repository: Repository,
     application: Application
 ) : AndroidViewModel(application) {
@@ -55,7 +55,7 @@ class GifListingFragmentViewModel @Inject constructor(
                 _trendingGifList.value = NetworkResult.Loading()
                 // online data check if internet if available
                 if (mContext.checkForInternetConnection()) {
-                    val response = repository.remote.getTrendingGif(offset.toString())
+                   /* val response = repository.remote.getTrendingGif(offset.toString())
                     response.body()?.let {
 
                         if (it.meta.status == Constant.API_RESPONSE_STATUS.OK) {
@@ -68,10 +68,10 @@ class GifListingFragmentViewModel @Inject constructor(
                             _trendingGifList.value =
                                 NetworkResult.Error(it.meta.msg)
                         }
-                    }
-//                    _trendingGifList.value = NetworkResult.Success(
-//                        gitResponseModel
-//                    )
+                    }*/
+                    _trendingGifList.value = NetworkResult.Success(
+                        gitResponseModel
+                    )
                 } else {
                     _trendingGifList.value =
                         NetworkResult.Error(mContext.getString(R.string.no_internet))
@@ -98,7 +98,7 @@ class GifListingFragmentViewModel @Inject constructor(
                 _searchGifList.value = NetworkResult.Loading()
                 // online data check if internet if available
                 if (mContext.checkForInternetConnection()) {
-                     val response = repository.remote.getSearchGif(query,offset.toString())
+                     /*val response = repository.remote.getSearchGif(query,offset.toString())
                      response.body()?.let {
 
                          if (it.meta.status == Constant.API_RESPONSE_STATUS.OK) {
@@ -111,10 +111,10 @@ class GifListingFragmentViewModel @Inject constructor(
                              _searchGifList.value =
                                  NetworkResult.Error(it.meta.msg)
                          }
-                     }
-//                    _searchGifList.value = NetworkResult.Success(
-//                        gitResponseModel
-//                    )
+                     }*/
+                    _searchGifList.value = NetworkResult.Success(
+                        gitResponseModel
+                    )
                 } else {
                     _searchGifList.value =
                         NetworkResult.Error(mContext.getString(R.string.no_internet))

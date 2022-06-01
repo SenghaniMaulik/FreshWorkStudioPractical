@@ -21,7 +21,7 @@ interface ApiInterface {
 
     @GET(SEARCH)
     suspend fun getSearchGif(
-        @Query("query") query: String,
+        @Query("q") query: String,
         @Query("offset") offset: String,
         @Query("limit") limit: String = PAGE_LIMIT
     ): Response<GifResponseModel>

@@ -14,13 +14,23 @@ import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.load.resource.gif.GifDrawable
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
+import com.demo.freshworkstudiopractical.R
 import com.demo.freshworkstudiopractical.adapter.diffUtils.GifDiffCallback
 import com.demo.freshworkstudiopractical.common.AdapterClickListener
+import com.demo.freshworkstudiopractical.data.database.FavouriteDao
 import com.demo.freshworkstudiopractical.databinding.ListItemBinding
 import com.demo.freshworkstudiopractical.model.response.GifResponseModel
+import com.demo.freshworkstudiopractical.utils.setSafeOnClickListener
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import timber.log.Timber
 
-class GifListAdapter(val context: Context, val mListener: AdapterClickListener) :
+class GifListAdapter(
+    val context: Context,
+    val favouriteDao: FavouriteDao,
+    val mListener: AdapterClickListener
+) :
     RecyclerView.Adapter<GifListAdapter.ViewHolder>() {
 
     var list = mutableListOf<GifResponseModel.GitDataModel>()
@@ -43,7 +53,7 @@ class GifListAdapter(val context: Context, val mListener: AdapterClickListener) 
         holder.binding.apply {
             dataModel.apply {
                 Glide.with(context).asGif()
-                    .load(dataModel.images?.preview_gif?.url)
+                    .load(dataModel.images?.fixed_height_downsampled?.url)
                     .listener(
                         object : RequestListener<GifDrawable> {
                             override fun onResourceReady(
@@ -58,6 +68,7 @@ class GifListAdapter(val context: Context, val mListener: AdapterClickListener) 
                                 Timber.i("onResourceReady:\t$model")
                                 return false
                             }
+
                             override fun onLoadFailed(
                                 e: GlideException?,
                                 model: Any?,
@@ -74,10 +85,27 @@ class GifListAdapter(val context: Context, val mListener: AdapterClickListener) 
                     .into(holder.binding.imgGif)
                     .clearOnDetach()
 
+                CoroutineScope(Dispatchers.Main).launch {
+                    imgFavourite.setImageResource(if (dataModel.id?.let {
+                            favouriteDao.getFavourite(
+                                it
+                            )
+                        } == null) R.drawable.ic_baseline_favorite_border_24 else R.drawable.ic_baseline_favorite_24)
+                }
 
-                imgGif.setOnClickListener {
+
+                imgGif.setSafeOnClickListener {
                     mListener.onItemClick(it, holder.absoluteAdapterPosition, dataModel)
                 }
+                imgShare.setSafeOnClickListener {
+                    mListener.onItemClick(it, holder.absoluteAdapterPosition, dataModel)
+                }
+
+                imgFavourite.setSafeOnClickListener {
+                    mListener.onItemClick(it, holder.absoluteAdapterPosition, dataModel)
+                }
+
+
             }
 
         }
@@ -86,11 +114,28 @@ class GifListAdapter(val context: Context, val mListener: AdapterClickListener) 
     override fun getItemCount(): Int = list.size
 
 
-    fun setData(newList: List<GifResponseModel.GitDataModel>) {
-        val diffCallback = GifDiffCallback(list, newList)
-        val diffResult = DiffUtil.calculateDiff(diffCallback)
-        list.clear()
-        list.addAll(newList)
-        diffResult.dispatchUpdatesTo(this)
+    fun clear() {
+        val size = list.size
+        if (size > 0) {
+            for (i in 0 until size) list.removeAt(0)
+
+            notifyItemRangeRemoved(0, size)
+        }
+    }
+
+    fun addData(
+        dataList: List<GifResponseModel.GitDataModel>,
+        isNew: Boolean = true
+    ) {
+        if (isNew)
+            this.list = ArrayList()
+
+        this.list.addAll(dataList)
+        if (isNew)
+            notifyDataSetChanged()
+        else
+            notifyItemRangeInserted(itemCount, list.size - 1)
+
+
     }
 }

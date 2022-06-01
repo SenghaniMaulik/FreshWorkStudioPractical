@@ -4,10 +4,12 @@ import android.app.Application
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
+import android.view.View
 import android.widget.ImageView
 import android.widget.Toast
 import com.bumptech.glide.Glide
 import com.demo.freshworkstudiopractical.R
+import com.demo.freshworkstudiopractical.common.SafeClickListener
 import java.io.IOException
 
 fun Any?.toast(context: Context, isShort: Boolean = false): Toast {
@@ -64,4 +66,11 @@ fun String.assetJSONFile(
     file.read(formArray)
     file.close()
     return String(formArray)
+}
+
+fun View.setSafeOnClickListener(onSafeClick: (View) -> Unit) {
+    val safeClickListener = SafeClickListener {
+        onSafeClick(it)
+    }
+    setOnClickListener(safeClickListener)
 }

@@ -3,4 +3,7 @@
     <string name="gif_image">Gif Image</string>
     <string name="no_internet">No Internet connection</string>
     <string name="something_went_wrong">Something went wrong…</string>
+    <string name="menu_search">Search</string>
+    <string name="search_gifs">Search Gif</string>
+    <string name="no_favourite_gifs_available">No Favourite Gifs Available</string>
 </resources>

@@ -3,12 +3,18 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Personal/Projects/Zignuts Projects/DemoProjects/FreshWorkStudioPractical/app/src/main/res/drawable/bg_heder_home.xml" value="0.2195" />
+        <entry key="..\:/Personal/Projects/Zignuts Projects/DemoProjects/FreshWorkStudioPractical/app/src/main/res/drawable/bg_search_edittext.xml" value="0.2195" />
         <entry key="..\:/Personal/Projects/Zignuts Projects/DemoProjects/FreshWorkStudioPractical/app/src/main/res/drawable/ic_error_placeholder.xml" value="0.2195" />
         <entry key="..\:/Personal/Projects/Zignuts Projects/DemoProjects/FreshWorkStudioPractical/app/src/main/res/drawable/ic_outline_home_24.xml" value="0.2195" />
+        <entry key="..\:/Personal/Projects/Zignuts Projects/DemoProjects/FreshWorkStudioPractical/app/src/main/res/drawable/ic_search_white_24dp.xml" value="0.2195" />
         <entry key="..\:/Personal/Projects/Zignuts Projects/DemoProjects/FreshWorkStudioPractical/app/src/main/res/layout/activity_main.xml" value="0.34512820512820513" />
         <entry key="..\:/Personal/Projects/Zignuts Projects/DemoProjects/FreshWorkStudioPractical/app/src/main/res/layout/custom_tab.xml" value="0.35052083333333334" />
+        <entry key="..\:/Personal/Projects/Zignuts Projects/DemoProjects/FreshWorkStudioPractical/app/src/main/res/layout/fragment_favourite_gif_listing.xml" value="0.35052083333333334" />
         <entry key="..\:/Personal/Projects/Zignuts Projects/DemoProjects/FreshWorkStudioPractical/app/src/main/res/layout/fragment_gif_listing.xml" value="0.35070349140177176" />
+        <entry key="..\:/Personal/Projects/Zignuts Projects/DemoProjects/FreshWorkStudioPractical/app/src/main/res/layout/layout_search_item.xml" value="0.35052083333333334" />
         <entry key="..\:/Personal/Projects/Zignuts Projects/DemoProjects/FreshWorkStudioPractical/app/src/main/res/layout/list_item.xml" value="0.35052083333333334" />
+        <entry key="..\:/Personal/Projects/Zignuts Projects/DemoProjects/FreshWorkStudioPractical/app/src/main/res/menu/menu_main.xml" value="0.34512820512820513" />
       </map>
     </option>
   </component>

@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import com.demo.freshworkstudiopractical.R
 import com.demo.freshworkstudiopractical.adapter.PagerAdapter
 import com.demo.freshworkstudiopractical.databinding.ActivityMainBinding
+import com.demo.freshworkstudiopractical.ui.fragments.FavouriteGifListingFragment
 import com.demo.freshworkstudiopractical.ui.fragments.GifListingFragment
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
@@ -46,7 +47,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun setBottomMenu(tabIcons: IntArray) {
         binding.viewPager.offscreenPageLimit = tabIcons.size
-        binding.viewPager.isUserInputEnabled = false
+//        binding.viewPager.isUserInputEnabled = false
         setupPager()
 
         //Adding here custom tab because we can customize it as par our requirement
@@ -86,7 +87,7 @@ class MainActivity : AppCompatActivity() {
     private fun setupPager() {
         val fragments = ArrayList<Fragment>()
         fragments.add(GifListingFragment())
-        fragments.add(GifListingFragment())
+        fragments.add(FavouriteGifListingFragment())
         val resultBundle = Bundle()
         val pagerAdapter = PagerAdapter(
             resultBundle,
@@ -96,7 +97,7 @@ class MainActivity : AppCompatActivity() {
         binding.viewPager.apply {
             adapter = pagerAdapter
         }
-        TabLayoutMediator(binding.tabLayout, binding.viewPager, false, false) { tab, position ->
+        TabLayoutMediator(binding.tabLayout, binding.viewPager, true, true) { tab, position ->
         }.attach()
     }
 
